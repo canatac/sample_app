@@ -15,7 +15,7 @@
 /log/*.log
 /tmp
 
-database.yaml
+database.yml
 doc/
 *.swp
 *~
