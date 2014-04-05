@@ -2,63 +2,59 @@ require 'spec_helper'
 
 describe "Static pages" do
 
+subject{page}
 
+shared_examples_for "all static pages" do
+    it{should have_selector('h1',text: heading)}
+    it{should have_title(full_title(page_title))}
+end
   describe "Home page" do
       before{visit root_path}
-      subject{page}
-      it{should have_content('Sample App')}
-      it{should have_title(full_title(''))}
+      let(:heading){'Sample App'}
+      let(:page_title){''}
+      
+      it_should_behave_like "all static pages"
+
       it{should_not have_title(' | Home')}
-      #it "should have the content 'Sample App'" do
-        
-      # Run the generator again with the --webrat flag if you want to use webrat methods/matchers
-      #visit root_path
-      #expect(page).to have_content('Sample App')
-      #end
-    
-    #it "should have the title 'Home'" do
-        # visit root_path
-        #   expect(page).to have_title("#{content}")
-        #end
-    
-    #it "should not have a custom page title" do
-        #visit root_path
-        #  expect(page).not_to have_title(" | Home")
-        # end
-    
   end
   
   describe "Help page" do
-    it "should have the content 'Help'" do
-        visit help_path
-        expect(page).to have_content('Help')
-    end
-    it "should have the title 'Help'" do
-        visit help_path
-        expect(page).to have_title(full_title('Help'))
-    end
+      before{visit help_path}
+      let(:heading){'Help'}
+      let(:page_title){'Help'}
+      
+      it_should_behave_like "all static pages"
   end
   
   describe "About" do
-      it "should have the content 'About Us'" do
-          visit about_path
-          expect(page).to have_content('About us')
-      end
-      it "should have the title 'About Us'" do
-          visit about_path
-          expect(page).to have_title(full_title('About Us'))
-      end
+      before{visit about_path}
+      let(:heading){'About us'}
+      let(:page_title){'About Us'}
+      
+      it_should_behave_like "all static pages"
   end
   
   describe "Contact" do
-      it "should have the content 'Contact'" do
-          visit contact_path
-          expect(page).to have_content('Contact')
-      end
-      it "should have the title 'Contact'" do
-          visit contact_path
-          expect(page).to have_title(full_title('Contact'))
-      end
+      before{visit contact_path}
+      let(:heading){'Contact'}
+      let(:page_title){'Contact'}
+      
+      it_should_behave_like "all static pages"
+  end
+  
+  it "should have the right links on the layout" do
+      visit root_path
+      click_link "About"
+      expect(page).to have_title(full_title('About Us'))
+      click_link "Help"
+      expect(page).to have_title(full_title('Help'))
+      click_link "Contact"
+      expect(page).to have_title(full_title('Contact'))
+      click_link "Home"
+      click_link "Sign up now!"
+      expect(page).to have_title(full_title('Sign up'))
+      click_link "sample app"
+
   end
   
 end
